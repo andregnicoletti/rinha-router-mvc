@@ -1,0 +1,14 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: rinha-router-mvc
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/rinha-mvc}
+    username: ${POSTGRES_USER:rinha}
+    password: ${POSTGRES_PASSWORD:rinha}
+    jpa:
+      hibernate:
+        ddl-auto: none
+      show-sql: true
