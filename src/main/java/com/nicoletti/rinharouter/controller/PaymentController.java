@@ -2,7 +2,7 @@ package com.nicoletti.rinharouter.controller;
 
 import com.nicoletti.rinharouter.model.dto.PaymentResponseDTO;
 import com.nicoletti.rinharouter.model.dto.PaymentRequestDTO;
-import com.nicoletti.rinharouter.service.api.PaymentProcessorService;
+import com.nicoletti.rinharouter.service.api.PaymentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/payments")
 public class PaymentController {
 
-    private PaymentProcessorService paymentProcessorService;
+    private PaymentService paymentProcessorService;
 
-    public PaymentController(PaymentProcessorService paymentProcessorService) {
+    public PaymentController(PaymentService paymentProcessorService) {
         this.paymentProcessorService = paymentProcessorService;
     }
 

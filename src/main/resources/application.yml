@@ -12,3 +12,9 @@ spring:
       hibernate:
         ddl-auto: none
       show-sql: true
+
+payment:
+  service:
+    url:
+      default: ${PAYMENT_SERVICE_URL_DEFAULT:http://localhost:8001/payments}
+      fallback: ${PAYMENT_SERVICE_URL_FALLBACK:http://localhost:8002/payments}

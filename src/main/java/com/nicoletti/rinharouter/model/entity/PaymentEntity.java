@@ -1,5 +1,6 @@
 package com.nicoletti.rinharouter.model.entity;
 
+import com.nicoletti.rinharouter.model.enuns.ProcessStatusType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,8 @@ public class PaymentEntity {
     private Long id;
     private String correlationId;
     private Double amount;
-    private Boolean status;
+    @Enumerated(EnumType.STRING)
+    private ProcessStatusType status;
     private LocalDateTime createdAt;
     private Integer retryCount;
 

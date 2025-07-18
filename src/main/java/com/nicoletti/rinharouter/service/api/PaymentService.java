@@ -2,8 +2,11 @@ package com.nicoletti.rinharouter.service.api;
 
 import com.nicoletti.rinharouter.model.dto.PaymentRequestDTO;
 import com.nicoletti.rinharouter.model.dto.PaymentResponseDTO;
+import com.nicoletti.rinharouter.model.entity.PaymentEntity;
 
-public interface PaymentProcessorService {
+import java.util.List;
+
+public interface PaymentService {
 
     /**
      * Processes a payment request and returns a response.
@@ -12,4 +15,8 @@ public interface PaymentProcessorService {
      * @return the payment response data transfer object
      */
     PaymentResponseDTO processPayment(PaymentRequestDTO requestPaymentDTO);
+
+    List<PaymentEntity> findPendingPayments();
+
+    void updatePaymentStatus(List<PaymentEntity> pendingPayments);
 }
