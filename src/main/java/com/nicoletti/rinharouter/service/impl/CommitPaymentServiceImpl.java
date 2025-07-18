@@ -23,6 +23,9 @@ public class CommitPaymentServiceImpl implements CommitPaymentService {
 
     private RestService restService;
 
+    private static final String SERVICE_TYPE_DEFAULT = "default";
+    private static final String SERVICE_TYPE_FALLBACK = "fallback";
+
     @Value("${payment.service.url.default}")
     private String defaultPaymentServiceUrl;
 
@@ -35,33 +38,35 @@ public class CommitPaymentServiceImpl implements CommitPaymentService {
 
     @Override
     public PaymentEntity commitPayment(PaymentEntity entity) {
-        logger.info("Committing payment: {}", entity);
+//        logger.info("Committing payment: {}", entity);
 
         PaymentProcessorRequestDTO paymentProcessorRequestDTO = new PaymentProcessorRequestDTO(entity.getCorrelationId(), entity.getAmount(), entity.getCreatedAt().toString());
+        logger.info("Preparing to commit payment with request: {}", paymentProcessorRequestDTO);
 
-        try {
-            PaymentProcessorResponseDTO post = restService.post(
-                    defaultPaymentServiceUrl,
+        // Prepare the request to the default payment service
+        boolean status = restService.post(
+                defaultPaymentServiceUrl,
+                paymentProcessorRequestDTO,
+                PaymentProcessorResponseDTO.class
+        );
+
+        // If the default service fails, try the fallback service
+        if (!status) {
+            logger.error("Failed to commit payment to default service, trying fallback service");
+            status = restService.post(
+                    fallbackPaymentServiceUrl,
                     paymentProcessorRequestDTO,
-                    PaymentProcessorResponseDTO.class
-            );
+                    PaymentProcessorResponseDTO.class);
+        }
+
+        // Update the payment entity status based on the response
+        if (status) {
             entity.setStatus(ProcessStatusType.COMPLETED);
-
-        } catch (Exception e) {
-            logger.error("Failed to commit payment to default service, trying fallback service {}", e.getMessage());
-            try {
-                PaymentProcessorResponseDTO post = restService.post(
-                        fallbackPaymentServiceUrl,
-                        paymentProcessorRequestDTO,
-                        PaymentProcessorResponseDTO.class
-                );
-                entity.setStatus(ProcessStatusType.COMPLETED);
-
-            } catch (Exception ex) {
-                logger.error("Failed to commit payment to fallback service: {}", ex.getMessage());
-                entity.setStatus(ProcessStatusType.PENDING);
-                entity.setRetryCount(entity.getRetryCount() + 1);
-            }
+            entity.setServicePaymentName(SERVICE_TYPE_DEFAULT);
+        } else {
+            entity.setStatus(ProcessStatusType.PENDING);
+            entity.setServicePaymentName(SERVICE_TYPE_FALLBACK);
+            entity.setRetryCount(entity.getRetryCount() + 1);
         }
 
         return entity;

@@ -2,8 +2,11 @@ package com.nicoletti.rinharouter.service.api;
 
 import com.nicoletti.rinharouter.model.dto.PaymentRequestDTO;
 import com.nicoletti.rinharouter.model.dto.PaymentResponseDTO;
+import com.nicoletti.rinharouter.model.dto.PaymentSummaryResponseDTO;
 import com.nicoletti.rinharouter.model.entity.PaymentEntity;
+import com.nicoletti.rinharouter.model.entity.PaymentTransactionEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PaymentService {
@@ -19,4 +22,8 @@ public interface PaymentService {
     List<PaymentEntity> findPendingPayments();
 
     void updatePaymentStatus(List<PaymentEntity> pendingPayments);
+
+    PaymentSummaryResponseDTO getPaymentSummary(LocalDateTime from, LocalDateTime to);
+
+    PaymentTransactionEntity savePaymentTransaction(PaymentTransactionEntity paymentTransactionEntity);
 }

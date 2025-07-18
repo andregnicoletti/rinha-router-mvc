@@ -1,6 +1,8 @@
 package com.nicoletti.rinharouter.service.impl;
 
 import com.nicoletti.rinharouter.service.api.RestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -11,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class RestServiceImpl implements RestService {
 
+    private final static Logger logger = LoggerFactory.getLogger(RestServiceImpl.class);
     private final RestTemplate restTemplate;
 
     public RestServiceImpl(RestTemplate restTemplate) {
@@ -18,26 +21,30 @@ public class RestServiceImpl implements RestService {
     }
 
     @Override
-    public <RESPONSE, REQUEST> RESPONSE post(String url, REQUEST request, Class<RESPONSE> responseType) {
+    public <RESPONSE, REQUEST> boolean post(String url, REQUEST request, Class<RESPONSE> responseType) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<REQUEST> requestHttpEntity = new HttpEntity<>(request, headers);
+            HttpEntity<REQUEST> requestHttpEntity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<RESPONSE> response = restTemplate.postForEntity(
-                url,
-                requestHttpEntity,
-                responseType
-        );
+            ResponseEntity<RESPONSE> response = restTemplate.postForEntity(
+                    url,
+                    requestHttpEntity,
+                    responseType
+            );
 
-        // Log (só como exemplo; use logger em prod)
-        System.out.println("Status code: " + response.getStatusCodeValue());
-        System.out.println("Resposta: " + response.getBody());
-        System.out.println("Headers: " + response.getHeaders());
+            logger.debug("Status code: {}", response.getStatusCodeValue());
+            logger.debug("Resposta: {}", response.getBody());
+            logger.debug("Headers: {}", response.getHeaders());
 
-        return response.getBody();
+        } catch (Exception e) {
+            logger.error("Error while making POST request to {}: {}", url, e.getMessage());
+            return false;
+        }
 
+        return true;
     }
 
 }

@@ -1,6 +1,8 @@
 package com.nicoletti.rinharouter.service.impl;
 
 import com.nicoletti.rinharouter.model.entity.PaymentEntity;
+import com.nicoletti.rinharouter.model.entity.PaymentTransactionEntity;
+import com.nicoletti.rinharouter.model.enuns.ProcessStatusType;
 import com.nicoletti.rinharouter.service.api.CommitPaymentService;
 import com.nicoletti.rinharouter.service.api.PaymentJob;
 import com.nicoletti.rinharouter.service.api.PaymentService;
@@ -38,7 +40,25 @@ public class PaymentJobImpl implements PaymentJob {
 
         List<PaymentEntity> pendingPayments = paymentService.findPendingPayments();
         logger.info("Found {} pending payments", pendingPayments.size());
-        pendingPayments.stream().forEach(commitPaymentService::commitPayment);
+        pendingPayments.stream().forEach( request -> {
+            logger.info("Processing payment with correlationId: {}", request.getCorrelationId());
+            PaymentEntity paymentEntity = commitPaymentService.commitPayment(request);
+            if(paymentEntity.getStatus().equals(ProcessStatusType.COMPLETED)) {
+                logger.info("Payment with correlationId: {} completed successfully", paymentEntity.getCorrelationId());
+
+                PaymentTransactionEntity paymentTransactionEntity = PaymentTransactionEntity.builder()
+                        .correlationId(request.getCorrelationId())
+                        .amount(request.getAmount())
+                        .endpointType(request.getServicePaymentName())
+                        .processedAt(request.getCreatedAt())
+                        .build();
+                paymentService.savePaymentTransaction(paymentTransactionEntity);
+
+
+            } else {
+                logger.error("Payment with correlationId: {} failed with status: {}", paymentEntity.getCorrelationId(), paymentEntity.getStatus());
+            }
+        });
 
         paymentService.updatePaymentStatus(pendingPayments);
 

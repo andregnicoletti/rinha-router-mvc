@@ -4,7 +4,8 @@ CREATE TABLE payments (
     amount DOUBLE PRECISION NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT FALSE,
     retry_count INT NOT NULL DEFAULT 0,
-    created_at TIMESTAMP NOT NULL
+    created_at TIMESTAMP NOT NULL,
+    service_payment_name VARCHAR(100)
 );
 
 CREATE TABLE payment_transactions (

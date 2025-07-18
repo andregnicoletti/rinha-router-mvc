@@ -25,5 +25,6 @@ public class PaymentEntity {
     private ProcessStatusType status;
     private LocalDateTime createdAt;
     private Integer retryCount;
+    private String servicePaymentName;
 
 }

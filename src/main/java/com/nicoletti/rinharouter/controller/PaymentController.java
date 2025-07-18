@@ -1,7 +1,7 @@
 package com.nicoletti.rinharouter.controller;
 
-import com.nicoletti.rinharouter.model.dto.PaymentResponseDTO;
 import com.nicoletti.rinharouter.model.dto.PaymentRequestDTO;
+import com.nicoletti.rinharouter.model.dto.PaymentResponseDTO;
 import com.nicoletti.rinharouter.service.api.PaymentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
