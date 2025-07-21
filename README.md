@@ -1,6 +1,6 @@
 # Rinha de Backend 2025 – Router MVC
 
-Projeto participante da [Rinha de Backend 2025](https://github.com/andregnicoletti/rinha-router-mvc), implementado com **Spring Boot**, **PostgreSQL** e **Nginx**.\
+Projeto participante da [Rinha de Backend 2025](https://github.com/zanfranceschi/rinha-de-backend-2025), implementado com **Spring Boot**, **PostgreSQL** e **Nginx**.\
 O objetivo é ser simples, performático e fácil de escalar durante a competição.
 
 ---
