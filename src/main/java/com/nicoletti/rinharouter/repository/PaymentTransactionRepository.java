@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Repository
@@ -25,8 +26,8 @@ public interface PaymentTransactionRepository extends JpaRepository<PaymentTrans
                 GROUP BY p.endpointType
             """)
     List<PaymentSummaryProjection> findSummaryByDateRange(
-            @Param("from") LocalDateTime from,
-            @Param("to") LocalDateTime to
+            @Param("from") OffsetDateTime from,
+            @Param("to") OffsetDateTime to
     );
 
 }

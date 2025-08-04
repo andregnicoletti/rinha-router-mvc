@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ public class PaymentServiceImpl implements PaymentService {
         PaymentEntity paymentEntity = new PaymentEntity().builder()
                 .amount(dto.amount())
                 .correlationId(dto.correlationId())
-                .createdAt(LocalDateTime.now())
+                .createdAt(OffsetDateTime.now())
                 .retryCount(0)
                 .status(ProcessStatusType.PENDING)
                 .build();
@@ -68,7 +69,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentSummaryResponseDTO getPaymentSummary(LocalDateTime from, LocalDateTime to) {
+    public PaymentSummaryResponseDTO getPaymentSummary(OffsetDateTime from, OffsetDateTime to) {
 
         logger.info("Retrieving payment summary from {} to {}", from, to);
 

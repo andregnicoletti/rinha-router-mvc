@@ -4,7 +4,7 @@ import com.nicoletti.rinharouter.model.enuns.ProcessStatusType;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -23,7 +23,7 @@ public class PaymentEntity {
     private Double amount;
     @Enumerated(EnumType.STRING)
     private ProcessStatusType status;
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
     private Integer retryCount;
     private String servicePaymentName;
 

@@ -3,7 +3,7 @@ package com.nicoletti.rinharouter.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -24,7 +24,7 @@ public class PaymentTransactionEntity {
 
     private double amount;
 
-    private LocalDateTime processedAt;
+    private OffsetDateTime processedAt;
 
 
 }

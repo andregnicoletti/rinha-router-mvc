@@ -7,6 +7,7 @@ import com.nicoletti.rinharouter.model.entity.PaymentEntity;
 import com.nicoletti.rinharouter.model.entity.PaymentTransactionEntity;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface PaymentService {
@@ -23,7 +24,7 @@ public interface PaymentService {
 
     void updatePaymentStatus(List<PaymentEntity> pendingPayments);
 
-    PaymentSummaryResponseDTO getPaymentSummary(LocalDateTime from, LocalDateTime to);
+    PaymentSummaryResponseDTO getPaymentSummary(OffsetDateTime from, OffsetDateTime to);
 
     PaymentTransactionEntity savePaymentTransaction(PaymentTransactionEntity paymentTransactionEntity);
 }
